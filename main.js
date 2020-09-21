@@ -13,8 +13,7 @@ function random(min, max) {
   return num;
 }
 
-class Ball {
-  Shape(x, y, velX, velY) {
+function Ball(x, y, velX, velY, color, size) {
     this.x = x;
     this.y = y;
     this.velX = velX;
@@ -22,14 +21,14 @@ class Ball {
     this.color = color;
     this.size = size;
   }
-  Ball()
-  draw() {
+
+  Ball.prototype.draw = function() {
     ctx.beginPath();
     ctx.fillStyle = this.color;
     ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
     ctx.fill();
   }
-  update() {
+Ball.prototype.update = function() {
     if ((this.x + this.size) >= width) {
       this.velX = -(this.velX);
     }
@@ -49,7 +48,7 @@ class Ball {
     this.x += this.velX;
     this.y += this.velY;
   }
-  collisionDetect() {
+Ball.prototype.collisionDetect = function() {
     for (let j = 0; j < balls.length; j++) {
       if (!(this === balls[j])) {
         const dx = this.x - balls[j].x;
@@ -62,7 +61,7 @@ class Ball {
       }
     }
   }
-}
+
 
 
 
