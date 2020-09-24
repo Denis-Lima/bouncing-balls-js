@@ -14,7 +14,7 @@ return num;
 }
 
 class Shape {
-    constructor(x, y, velX, velY,  existe=true) {
+    constructor(x, y, velX, velY,  existe) {
         this.x = x;
         this.y = y;
         this.velX = velX;
@@ -23,9 +23,17 @@ class Shape {
         }
 }
 
+class EvilCircle extends Shape {
+    constructor(x, y, velX, velY, existe) {
+        super(x, y, 20, 20, true);
+        this.color = 'white';
+        this.size = 10;
+    }
+}
+
 class Ball extends Shape {
-    constructor(x, y, velX, velY, existe=true, color, size) {
-        super(x, y, velX, velY, existe=true, color, size) 
+    constructor(x, y, velX, velY, existe, color, size) {
+        super(x, y, velX, velY, true, color, size);
         this.color = color;
         this.size = size;
     }
