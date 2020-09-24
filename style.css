@@ -23,3 +23,48 @@ h1 {
   color: transparent;
   text-shadow: 0 0 4px white;
 }
+
+p {
+  position: absolute;
+  margin: 0;
+  top: 35px;
+  right: 30px;
+  color: #aaa;
+}
+
+#controles {
+  position: absolute;
+  margin: 0;
+  top: 97%;
+  right: 5px;
+  color: #aaa;
+
+}
+
+span {
+  position: absolute;
+  margin: 0;
+  top: 35px;
+  right: 5px;
+  color: #aaa;
+}
+
+#start {
+  position: absolute;
+  top: 40%;
+  right: 45%;
+  width: 150px;
+  height: 150px;
+  font-size: 25px;
+  font-family: 'Major Mono Display', monospace;
+  background-color: blue;
+  color: white;
+}
+
+#msg-vencedor {
+  position: absolute;
+  top: 30%;
+  right: 35%;
+  font-size: 25px;
+  color: red;
+}
