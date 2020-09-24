@@ -1,3 +1,8 @@
+// configurar contagem
+
+const span = document.querySelector('span');
+let qtd_bolas = 1;
+
 // configurar canvas
 
 const canvas = document.querySelector('canvas');
@@ -35,9 +40,8 @@ EvilCircle.prototype.draw = function(){
     ctx.beginPath();
     ctx.lineWidth = 3;
     ctx.strokeStyle = this.color;
+    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
     ctx.stroke();
-    ctx.arc(thix.x, thix.y, this.size, 0, 2 * Math.PI);
-    ctx.fill();
 }
 
 EvilCircle.prototype.checarBordas = function() {
@@ -82,9 +86,15 @@ EvilCircle.prototype.collisionDetect = function() {
 
             if (distance < this.size + balls[j].size) {
                 balls[j]['existe'] = false;
+                qtd_bolas--;
+                this.crescer();
             }
         }
     }
+}
+
+EvilCircle.prototype.crescer = function() {
+    this.size++;
 }
 
 class Ball extends Shape {
@@ -139,33 +149,78 @@ Ball.prototype.collisionDetect = function() {
 
 let balls = [];
 
+let circulo = new EvilCircle(20, 20, 20, 20, true);
+circulo.setControls();
+
 function loop() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
     ctx.fillRect(0, 0, width, height);
 
-while (balls.length < 25) {
-    let size = random(10,20);
-    let ball = new Ball(
-        //  bola sempre será desenhada com pelo menos a largura de uma bola
-        // de distancia longe das bordas da tela para evitar erros
-    random(0 + size,width - size),
-    random(0 + size,height - size),
-    random(-7,7),
-    random(-7,7),
-    true,
-    'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
-    size
-    );
-balls.push(ball);
-}
-                                                
-for (let i = 0; i < balls.length; i++) {
-    balls[i].draw();
-    balls[i].update();
-    balls[i].collisionDetect();
+    while (balls.length < 25) {
+        let size = random(10,20);
+        let ball = new Ball(
+                //  bola sempre será desenhada com pelo menos a largura de uma bola
+                // de distancia longe das bordas da tela para evitar erros
+            random(0 + size,width - size),
+            random(0 + size,height - size),
+            random(-7,7),
+            random(-7,7),
+            true,
+            'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
+            size
+            );
+        balls.push(ball);
+    }
+                                                    
+    for (let i = 0; i < balls.length; i++) {
+        if (balls[i].existe){
+            balls[i].draw();
+            balls[i].update();
+            balls[i].collisionDetect();
+        }
+        if (qtd_bolas === 0) {
+            ganhou = true;
+            botao.hidden = false;
+            msg.hidden = false;
+        }
+    }
+    circulo.draw();
+    circulo.checarBordas();
+    circulo.collisionDetect();
+    
+    span.textContent = qtd_bolas;
+
+    if (ganhou) {
+        cancelAnimationFrame(requestAnimationFrame(loop));
+    }
+
+    requestAnimationFrame(loop);
 }
 
-requestAnimationFrame(loop);
+// pré configurar jogo
+let botao = document.querySelector('button');
+let msg = document.querySelector('#msg-vencedor');
+msg.hidden = true;
+let ganhou = false;
+ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+ctx.fillRect(0, 0, width, height);
+
+function rodarJogo(){
+
+    // configurar jogo
+    ganhou = false;
+    
+    balls = [];
+    circulo = new EvilCircle(20, 20, 20, 20, true);
+    circulo.setControls();
+
+    qtd_bolas = 25;
+
+    botao.hidden = true;
+    msg.hidden = true;
+
+    
+    loop();
 }
 
-loop()
+botao.addEventListener("click", rodarJogo);
