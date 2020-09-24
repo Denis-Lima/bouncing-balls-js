@@ -31,6 +31,15 @@ class EvilCircle extends Shape {
     }
 }
 
+EvilCircle.prototype.draw = function(){
+    ctx.beginPath();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = this.color;
+    ctx.stroke();
+    ctx.arc(thix.x, thix.y, this.size, 0, 2 * Math.PI);
+    ctx.fill();
+}
+
 class Ball extends Shape {
     constructor(x, y, velX, velY, existe, color, size) {
         super(x, y, velX, velY, true, color, size);
