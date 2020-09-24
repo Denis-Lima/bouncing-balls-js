@@ -40,6 +40,53 @@ EvilCircle.prototype.draw = function(){
     ctx.fill();
 }
 
+EvilCircle.prototype.checarBordas = function() {
+    if ((this.x + this.size) >= width) {
+        this.x -= this.size;
+    }
+
+    if ((this.x - this.size) <= 0) {
+        this.x += this.size;
+    }
+
+    if ((this.y + this.size) >= height) {
+        this.y -= this.size;
+    }
+
+    if ((this.y - this.size) <= 0) {
+        this.y += this.size;
+    }
+}
+
+EvilCircle.prototype.setControls = function() {
+    var _this = this;
+    window.onkeydown = function(e) {
+        if (e.keyCode === 37) {
+            _this.x -= _this.velX;
+        } else if (e.keyCode === 39) {
+            _this.x += _this.velX;
+        } else if (e.keyCode === 38) {
+            _this.y -= _this.velY;
+        } else if (e.keyCode === 40) {
+            _this.y += _this.velY;
+        }
+    }
+}
+
+EvilCircle.prototype.collisionDetect = function() {
+    for (let j = 0; j < balls.length; j++) {
+        if (balls[j].existe) {
+            const dx = this.x - balls[j].x;
+            const dy = this.y - balls[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < this.size + balls[j].size) {
+                balls[j]['existe'] = false;
+            }
+        }
+    }
+}
+
 class Ball extends Shape {
     constructor(x, y, velX, velY, existe, color, size) {
         super(x, y, velX, velY, true, color, size);
@@ -79,14 +126,14 @@ Ball.prototype.update = function() {
 Ball.prototype.collisionDetect = function() {
     for (let j = 0; j < balls.length; j++) {
         if (!(this === balls[j])) {
-        const dx = this.x - balls[j].x;
-        const dy = this.y - balls[j].y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+            const dx = this.x - balls[j].x;
+            const dy = this.y - balls[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < this.size + balls[j].size) {
-        balls[j].color = this.color = 'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) + ')';
+            if (distance < this.size + balls[j].size) {
+                balls[j].color = this.color = 'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) + ')';
+            }
         }
-    }
     }
 }
 
